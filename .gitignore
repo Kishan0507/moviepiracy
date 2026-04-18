@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+*.egg
+.eggs/
+*.whl
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+
+# Environment
+.env
+*.env
+venv/
+env/
+
+# FFmpeg binaries (download locally, don't commit)
+ffmpeg.zip
+ffmpeg-master-latest-win64-gpl/
+ffmpeg_bin/
+imageio_ffmpeg/
+
+# Celery runtime directories
+broker_dir/
+results_dir/
+control/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Node (frontend has its own .gitignore too)
+frontend/node_modules/
+frontend/dist/
+
+# Logs
+*.log

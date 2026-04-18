@@ -1,0 +1,17 @@
+Django
+djangorestframework
+django-cors-headers
+opencv-python
+numpy
+pycryptodome
+qrcode
+pyzbar
+ffmpeg-python
+Pillow
+reportlab
+celery[redis]
+redis
+reedsolo
+cryptography
+structlog
+scipy
