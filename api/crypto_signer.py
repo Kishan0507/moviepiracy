@@ -1,15 +1,4 @@
-"""
-ECDSA P-256 digital signature module for watermark payload integrity.
-
-Manages key pair generation, signing, and verification:
-  - Auto-generates ECDSA P-256 key pair on first use (stored in media/keys/)
-  - sign_payload(data) → signature bytes
-  - verify_payload(data, signature) → bool
-
-If someone forges a fake QR code with a different private key,
-verify_payload() returns False and the system flags it as
-"CRYPTOGRAPHICALLY FORGED."
-"""
+"""ECDSA P-256 digital signature module for watermark payload integrity."""
 import os
 import logging
 from cryptography.hazmat.primitives import hashes, serialization
@@ -96,15 +85,7 @@ def _load_public_key():
 
 
 def sign_payload(data: bytes) -> bytes:
-    """
-    Sign raw bytes with the ECDSA P-256 private key.
-
-    Args:
-        data: The raw payload bytes to sign.
-
-    Returns:
-        DER-encoded ECDSA signature bytes.
-    """
+    """Sign raw bytes with the ECDSA P-256 private key."""
     key = _load_private_key()
     signature = key.sign(data, ec.ECDSA(hashes.SHA256()))
     logger.debug(f"Signed {len(data)} bytes → {len(signature)} byte signature")
@@ -112,16 +93,7 @@ def sign_payload(data: bytes) -> bytes:
 
 
 def verify_payload(data: bytes, signature: bytes) -> bool:
-    """
-    Verify an ECDSA signature against the public key.
-
-    Args:
-        data: The original payload bytes.
-        signature: The DER-encoded ECDSA signature.
-
-    Returns:
-        True if signature is valid, False if forged/tampered.
-    """
+    """Verify an ECDSA signature against the public key."""
     key = _load_public_key()
     try:
         key.verify(signature, data, ec.ECDSA(hashes.SHA256()))

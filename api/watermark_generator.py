@@ -1,16 +1,4 @@
-"""
-Watermark payload generation with ECDSA cryptographic signatures.
-
-Generates the metadata payload as a JSON string, signs it with ECDSA P-256,
-and encodes both payload + signature into a dot-separated format that is
-rendered into the dynamic QR code during the embedding pipeline.
-
-Format: base64(json_payload) . base64(ecdsa_signature)
-
-The detector only needs the public key to verify authenticity.
-If someone forges a fake QR code, the signature check will fail
-and the system flags it as "CRYPTOGRAPHICALLY FORGED."
-"""
+"""Watermark payload generation with ECDSA cryptographic signatures."""
 import hashlib
 import json
 import logging
@@ -22,10 +10,7 @@ logger = logging.getLogger('api.watermark_generator')
 
 
 def compute_file_hash(file_path: str) -> str:
-    """
-    Compute SHA-256 hash of a file by streaming 64 KB chunks.
-    Never loads the full file into memory.
-    """
+    """Compute SHA-256 hash of a file by streaming 64 KB chunks."""
     sha = hashlib.sha256()
     with open(file_path, 'rb') as f:
         while True:
@@ -39,21 +24,7 @@ def compute_file_hash(file_path: str) -> str:
 def generate_watermark_payload(theatre_id: str, movie_id: str,
                                showtime_timestamp: str = '',
                                file_hash: str = '') -> bytes:
-    """
-    Generate a signed watermark payload containing metadata as JSON.
-
-    The payload is structured as: json_bytes + ECDSA_signature
-    Both are combined into a dot-separated base64 string for QR encoding.
-
-    Args:
-        theatre_id: UUID string of the theatre.
-        movie_id: UUID string of the movie.
-        showtime_timestamp: ISO-8601 timestamp.
-        file_hash: SHA-256 hex digest of the original movie file.
-
-    Returns:
-        Combined payload bytes (JSON + signature) ready for QR encoding.
-    """
+    """Generate a signed watermark payload containing metadata as JSON."""
     import uuid
     import time
     metadata = {
@@ -87,14 +58,7 @@ def generate_watermark_payload(theatre_id: str, movie_id: str,
 
 
 def decrypt_watermark_payload(payload_bytes: bytes) -> dict:
-    """
-    Decode and verify the signed payload.
-
-    Handles both signed (dotted format) and unsigned (plain JSON) payloads.
-
-    Returns:
-        Dict with 'success', 'metadata', 'signed', 'forged', or 'error' keys.
-    """
+    """Decode and verify the signed payload."""
     try:
         decoded_str = payload_bytes.decode('utf-8')
 

@@ -21,6 +21,7 @@ import Notifications from './pages/Notifications';
 // Vite dev server proxies /api and /media to Django backend (see vite.config.js)
 
 /* ─── Dashboard ─── */
+// Main dashboard view showing statistics and recent tasks
 function Dashboard() {
   const [stats, setStats] = useState(null);
   const [tasks, setTasks] = useState([]);
@@ -85,6 +86,7 @@ function Dashboard() {
 }
 
 /* ─── Theatres ─── */
+// Theatre management and registration view
 function Theatres() {
   const [theatres, setTheatres] = useState([]);
   const [form, setForm] = useState({ name: '', location: '', contact_email: '' });
@@ -116,6 +118,7 @@ function Theatres() {
 }
 
 /* ─── Movies ─── */
+// Movie library for uploading and managing source files
 function Movies() {
   const [movies, setMovies] = useState([]);
   const [title, setTitle] = useState(''); const [file, setFile] = useState(null); const [loading, setLoading] = useState(false); const [toast, setToast] = useState(null);
@@ -149,6 +152,7 @@ function Movies() {
 }
 
 /* ─── Showtimes ─── */
+// Scheduler for movie showtimes across different theatres
 function Showtimes() {
   const [timings, setTimings] = useState([]); const [theatres, setTheatres] = useState([]); const [movies, setMovies] = useState([]);
   const [form, setForm] = useState({ theatre: '', movie: '', time: '' }); const [toast, setToast] = useState(null);
@@ -174,6 +178,7 @@ function Showtimes() {
 }
 
 /* ─── Watermark Process ─── */
+// Interface for initiating the video watermark embedding process
 function WatermarkProcess() {
   const [searchParams] = useSearchParams(); const navigate = useNavigate();
   const [theatres, setTheatres] = useState([]); const [movies, setMovies] = useState([]); const [timings, setTimings] = useState([]);
@@ -210,6 +215,7 @@ function WatermarkProcess() {
 }
 
 /* ─── Piracy Detector (Dual Mode: Frame Snapshot + Full Video) ─── */
+// Tool for analyzing images or videos to detect watermarks and find piracy sources
 function Detector() {
   const [mode, setMode] = useState('snapshot');  // 'snapshot' | 'video'
   const [file, setFile] = useState(null);

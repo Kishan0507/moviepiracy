@@ -1,17 +1,4 @@
-"""
-Image-based piracy detection — single frame/screenshot QR code extraction.
-
-Instead of scanning an entire video, this module detects the QR code watermark
-from a single image — a screenshot, a photo of a paused screen, or a frame
-captured from a phone camera recording.
-
-Multi-strategy QR recovery pipeline:
-  1. Direct pyzbar decode on raw image
-  2. CLAHE enhancement + multiple adaptive threshold block sizes
-  3. Morphological cleanup (erode/dilate) for phone-camera noise
-  4. Inverted variants of all above strategies
-  5. Multi-scale detection (resize + retry for small QR codes)
-"""
+"""Image-based piracy detection via single frame/screenshot QR extraction."""
 import logging
 import time
 import numpy as np
@@ -22,7 +9,7 @@ logger = logging.getLogger('api.image_detector')
 
 
 def _decode_qr_from_array(img_array, label=""):
-    """Try to decode QR from a numpy array (grayscale uint8)."""
+    """Try to decode QR from a numpy array."""
     from pyzbar.pyzbar import decode as pyzbar_decode
     pil_img = Image.fromarray(img_array, mode='L')
     decoded = pyzbar_decode(pil_img)
@@ -134,16 +121,7 @@ def _try_all_strategies(gray_np):
 
 
 def detect_from_image(image_file) -> dict:
-    """
-    Detect QR code watermark from a single image file.
-
-    Args:
-        image_file: A file-like object (Django UploadedFile, BytesIO, etc.)
-            containing a screenshot or photo of a video frame.
-
-    Returns:
-        Dict with 'success', 'metadata', 'elapsed', 'strategy', etc.
-    """
+    """Detect QR code watermark from a single image file."""
     from .watermark_generator import decrypt_watermark_payload
     import base64
 

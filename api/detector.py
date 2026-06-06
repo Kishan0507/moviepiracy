@@ -1,9 +1,4 @@
-"""
-Piracy detection pipeline — Fast Multi-Threaded Multi-Angle Scanner.
-
-Includes: threaded concurrent parsing, FFMPEG frame downscaling, 
-and mobile video rotational distortion resolution.
-"""
+"""Piracy detection pipeline — Fast Multi-Threaded Multi-Angle Scanner."""
 import os
 import logging
 import time
@@ -19,10 +14,7 @@ logger = logging.getLogger('api.detector')
 def detect_watermark(input_file: str,
                      sample_interval_seconds: float = 1.0,
                      max_frames_to_check: int = 120) -> dict:
-    """
-    Scan a video for the visible dynamic QR code watermark.
-    Sweeps frames quickly using concurrent workers and rot-matrices.
-    """
+    """Scan a video for the visible dynamic QR code watermark."""
     start_time = time.time()
     from django.conf import settings as django_settings
     from .watermark_generator import decrypt_watermark_payload

@@ -1,13 +1,4 @@
-"""
-Video processing pipeline — Dynamic Movable QR Code watermark embedding.
-
-Phases:
-  1. PROBE    — Extract video metadata (resolution, duration, fps, codec)
-  2. HASH     — Compute SHA-256 of original file (streaming)
-  3. GENERATE — Create encrypted payload string
-  4. EMBED    — Stream frames through FFmpeg pipes, overlay dynamic QR code
-  5. VALIDATE — Verify output file integrity
-"""
+"""Video processing pipeline — Dynamic Movable QR Code watermark embedding."""
 import os
 import subprocess
 import logging
@@ -117,11 +108,7 @@ def process_video_stream(input_file: str, output_file: str,
                          theatre_id: str, movie_id: str,
                          task_id: str = None,
                          showtime_timestamp: str = '') -> dict:
-    """
-    Full watermark embedding pipeline with dynamic QR code overlay.
-
-    Returns dict with 'success', 'error', 'ffmpeg_log', and timing data.
-    """
+    """Full watermark embedding pipeline with dynamic QR code overlay."""
     timings = {}
     ffmpeg_log = ''
 
@@ -198,14 +185,7 @@ def process_video_stream(input_file: str, output_file: str,
         qr_size = max(150, min(width, height) // 5)  # Enlarged to ~20% for visibility
         generate_qr_image_file(payload_bytes, qr_img_path, size=qr_size)
 
-        # ── Discrete Pulse/Flash QR Strategy ──
-        #
-        # The QR code is COMPLETELY INVISIBLE normally, and flashes into the frame
-        # for exactly 1.5 seconds at pseudo-random intervals (between 30s-90s).
-        # During the flash, it stays perfectly still (no motion blur) in one of 
-        # 9 random grid positions (left/mid/right x top/mid/bottom) so that it
-        # is always perfectly clear, high-resolution, and easy to detect.
-        #
+        # Flash QR code periodically
         margin = max(20, min(width, height) // 30)
         grid_w = f"(main_w-overlay_w-2*{margin})/2"
         grid_h = f"(main_h-overlay_h-2*{margin})/2"

@@ -17,12 +17,7 @@ def _is_filesystem_broker():
 
 
 def dispatch_watermark(task_id):
-    """
-    Smart dispatcher: uses Celery if Redis is available,
-    falls back to a background thread for local dev (filesystem broker).
-
-    Returns (celery_task_id_or_none, method_used).
-    """
+    """Smart dispatcher: uses Celery if Redis is available, else thread."""
     if _is_filesystem_broker():
         logger.info(f"[{task_id}] Filesystem broker detected — running in background thread")
         thread = threading.Thread(
@@ -68,10 +63,7 @@ def process_watermark(self, task_id):
 
 
 def _execute_watermark(task_id, celery_request_id=None):
-    """
-    Core watermark pipeline — used by both Celery and thread fallback.
-    Phases: PROBING → HASHING → EMBEDDING → ENCODING → VALIDATING → DONE
-    """
+    """Core watermark pipeline — used by Celery and thread fallback."""
     from .models import WatermarkTask
     from .video_processor import process_video_stream
     from .audit import log_and_notify

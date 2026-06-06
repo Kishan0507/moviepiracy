@@ -4,6 +4,7 @@ import uuid
 
 
 class UserProfile(models.Model):
+    """User profile for role management."""
     ROLE_CHOICES = (
         ('ADMIN', 'Admin'),
         ('DISTRIBUTOR', 'Distributor'),
@@ -18,6 +19,7 @@ class UserProfile(models.Model):
 
 
 class Theatre(models.Model):
+    """Theatre venue details and compliance tracking."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
@@ -32,6 +34,7 @@ class Theatre(models.Model):
 
 
 class Movie(models.Model):
+    """Movie metadata and master file storage."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
@@ -44,6 +47,7 @@ class Movie(models.Model):
 
 
 class MovieTiming(models.Model):
+    """Scheduled showtimes for movies at theatres."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     theatre = models.ForeignKey(Theatre, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
@@ -55,6 +59,7 @@ class MovieTiming(models.Model):
 
 
 class WatermarkTask(models.Model):
+    """Background task for embedding video watermarks."""
     STATUS_CHOICES = (
         ('PENDING', 'Pending'),
         ('PROCESSING', 'Processing'),
@@ -92,6 +97,7 @@ class WatermarkTask(models.Model):
 
 
 class PiracyCase(models.Model):
+    """Piracy incident reports and investigations."""
     STATUS_CHOICES = (
         ('OPEN', 'Open'),
         ('INVESTIGATING', 'Investigating'),
